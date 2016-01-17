@@ -7,7 +7,6 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.OAuth;
-    using proof_of_concept_spa.Web;
     using proof_of_concept_spa.Web.Entities;
     using proof_of_concept_spa.Web.Models;
 
@@ -15,7 +14,6 @@
     {
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-
             string clientId = string.Empty;
             string clientSecret = string.Empty;
             Client client = null;
@@ -27,10 +25,8 @@
 
             if (context.ClientId == null)
             {
-                //Remove the comments from the below line context.SetError, and invalidate context 
-                //if you want to force sending clientId/secrects once obtain access tokens. 
                 context.Validated();
-                //context.SetError("invalid_clientId", "ClientId should be sent.");
+
                 return Task.FromResult<object>(null);
             }
 
@@ -52,13 +48,10 @@
                     context.SetError("invalid_clientId", "Client secret should be sent.");
                     return Task.FromResult<object>(null);
                 }
-                else
+                if (client.Secret != Helper.GetHash(clientSecret))
                 {
-                    if (client.Secret != Helper.GetHash(clientSecret))
-                    {
-                        context.SetError("invalid_clientId", "Client secret is invalid.");
-                        return Task.FromResult<object>(null);
-                    }
+                    context.SetError("invalid_clientId", "Client secret is invalid.");
+                    return Task.FromResult<object>(null);
                 }
             }
 
@@ -68,8 +61,8 @@
                 return Task.FromResult<object>(null);
             }
 
-            context.OwinContext.Set<string>("as:clientAllowedOrigin", client.AllowedOrigin);
-            context.OwinContext.Set<string>("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
+            context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
+            context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
 
             context.Validated();
             return Task.FromResult<object>(null);
@@ -77,29 +70,32 @@
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
 
             if (allowedOrigin == null) allowedOrigin = "*";
 
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
+            var userId = "";
             using (AuthRepository _repo = new AuthRepository())
             {
                 IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
-
+                
                 if (user == null)
                 {
                     context.SetError("invalid_grant", "The user name or password is incorrect.");
                     return;
                 }
+                userId = user.Id;
             }
 
+            // add identity claims, used to retrieve user details when the bearer token is sent by the client
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-            identity.AddClaim(new Claim("sub", context.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Role, "Bed Manager"));
+            identity.AddClaim(new Claim(ClaimTypes.Sid, userId));
 
+            // add any additional attributes to the response token
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
                     { 
@@ -107,12 +103,15 @@
                     },
                     { 
                         "userName", context.UserName
+                    },
+                    { 
+                        "UserId", userId
                     }
+
                 });
 
             var ticket = new AuthenticationTicket(identity, props);
             context.Validated(ticket);
-
         }
 
         public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
@@ -126,7 +125,7 @@
                 return Task.FromResult<object>(null);
             }
 
-            // Change auth ticket for refresh token requests
+            // change auth ticket for refresh token requests
             var newIdentity = new ClaimsIdentity(context.Ticket.Identity);
             
             var newClaim = newIdentity.Claims.Where(c => c.Type == "newClaim").FirstOrDefault();

@@ -3,7 +3,6 @@
     using System;
     using System.Threading.Tasks;
     using Microsoft.Owin.Security.Infrastructure;
-    using proof_of_concept_spa.Web;
     using proof_of_concept_spa.Web.Entities;
 
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider
@@ -24,8 +23,7 @@
             {
                 var refreshTokenLifeTime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime"); 
                
-                var token = new RefreshToken() 
-                { 
+                var token = new RefreshToken { 
                     Id = Helper.GetHash(refreshTokenId),
                     ClientId = clientid, 
                     Subject = context.Ticket.Identity.Name,

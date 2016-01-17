@@ -2,6 +2,7 @@
 {
     using System;
     using System.Security.Cryptography;
+    using System.Text;
 
     public class Helper
     {
@@ -9,7 +10,7 @@
         {
             HashAlgorithm hashAlgorithm = new SHA256CryptoServiceProvider();
        
-            byte[] byteValue = System.Text.Encoding.UTF8.GetBytes(input);
+            byte[] byteValue = Encoding.UTF8.GetBytes(input);
 
             byte[] byteHash = hashAlgorithm.ComputeHash(byteValue);
 

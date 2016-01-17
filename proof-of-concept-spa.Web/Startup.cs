@@ -1,5 +1,4 @@
 ﻿using Microsoft.Owin;
-
 using proof_of_concept_spa.Web;
 
 [assembly: OwinStartup(typeof(Startup))]
@@ -9,12 +8,9 @@ namespace proof_of_concept_spa.Web
     using System;
     using System.Web.Http;
     using Microsoft.AspNet.Identity;
-    using Microsoft.Owin;
     using Microsoft.Owin.Cors;
     using Microsoft.Owin.Security.OAuth;
-
     using Owin;
-
     using proof_of_concept_spa.Web.Providers;
 
     public class Startup
@@ -24,12 +20,14 @@ namespace proof_of_concept_spa.Web
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
-
-            this.ConfigureOAuth(app);
+            
+            ConfigureOAuth(app);
 
             WebApiConfig.Register(config);
             app.UseCors(CorsOptions.AllowAll);
             app.UseWebApi(config);
+
+            AutofacConfig.Configure(config);
         }
 
         public void ConfigureOAuth(IAppBuilder app)
@@ -38,7 +36,7 @@ namespace proof_of_concept_spa.Web
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
             OAuthBearerOptions = new OAuthBearerAuthenticationOptions();
 
-            OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions() {
+            OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions {
             
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"),

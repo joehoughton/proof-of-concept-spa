@@ -2,16 +2,15 @@
 {
     using System.Threading.Tasks;
     using System.Web.Http;
-    using proof_of_concept_spa.Web;
 
     [RoutePrefix("api/RefreshTokens")]
     public class RefreshTokensController : ApiController
     {
-        private AuthRepository _repo;
+        private readonly AuthRepository _repo;
 
         public RefreshTokensController()
         {
-            this._repo = new AuthRepository();
+            _repo = new AuthRepository();
         }
 
         // [Authorize(Users="Admin")]
@@ -19,7 +18,7 @@
         [Route("")]
         public IHttpActionResult Get()
         {
-            return this.Ok(this._repo.GetAllRefreshTokens());
+            return Ok(_repo.GetAllRefreshTokens());
         }
 
         // [Authorize(Users = "Admin")]
@@ -27,12 +26,12 @@
         [Route("")]
         public async Task<IHttpActionResult> Delete(string tokenId)
         {
-            var result = await this._repo.RemoveRefreshToken(tokenId);
+            var result = await _repo.RemoveRefreshToken(tokenId);
             if (result)
             {
-                return this.Ok();
+                return Ok();
             }
-            return this.BadRequest("Token Id does not exist");
+            return BadRequest("Token Id does not exist");
             
         }
 
@@ -40,7 +39,7 @@
         {
             if (disposing)
             {
-                this._repo.Dispose();
+                _repo.Dispose();
             }
 
             base.Dispose(disposing);

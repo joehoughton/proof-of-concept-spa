@@ -18,7 +18,7 @@
         public AuthRepository()
         {
             _ctx = new AuthContext();
-            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(this._ctx));
+            _userManager = new UserManager<IdentityUser>(new UserStore<IdentityUser>(_ctx));
         }
 
         public async Task<IdentityResult> RegisterUser(UserModel userModel)
@@ -28,21 +28,21 @@
                 UserName = userModel.UserName
             };
 
-            var result = await this._userManager.CreateAsync(user, userModel.Password);
+            var result = await _userManager.CreateAsync(user, userModel.Password);
 
             return result;
         }
 
         public async Task<IdentityUser> FindUser(string userName, string password)
         {
-            IdentityUser user = await this._userManager.FindAsync(userName, password);
+            IdentityUser user = await _userManager.FindAsync(userName, password);
 
             return user;
         }
 
         public Client FindClient(string clientId)
         {
-            var client = this._ctx.Clients.Find(clientId);
+            var client = _ctx.Clients.Find(clientId);
 
             return client;
         }
@@ -50,25 +50,25 @@
         public async Task<bool> AddRefreshToken(RefreshToken token)
         {
 
-           var existingToken = this._ctx.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
+           var existingToken = _ctx.RefreshTokens.Where(r => r.Subject == token.Subject && r.ClientId == token.ClientId).SingleOrDefault();
 
            if (existingToken != null)
            {
-             var result = await this.RemoveRefreshToken(existingToken);
+             var result = await RemoveRefreshToken(existingToken);
            }
           
             _ctx.RefreshTokens.Add(token);
 
-            return await this._ctx.SaveChangesAsync() > 0;
+            return await _ctx.SaveChangesAsync() > 0;
         }
 
         public async Task<bool> RemoveRefreshToken(string refreshTokenId)
         {
-           var refreshToken = await this._ctx.RefreshTokens.FindAsync(refreshTokenId);
+           var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
 
            if (refreshToken != null) {
-               this._ctx.RefreshTokens.Remove(refreshToken);
-               return await this._ctx.SaveChangesAsync() > 0;
+               _ctx.RefreshTokens.Remove(refreshToken);
+               return await _ctx.SaveChangesAsync() > 0;
            }
 
            return false;
@@ -76,48 +76,47 @@
 
         public async Task<bool> RemoveRefreshToken(RefreshToken refreshToken)
         {
-            this._ctx.RefreshTokens.Remove(refreshToken);
-             return await this._ctx.SaveChangesAsync() > 0;
+             _ctx.RefreshTokens.Remove(refreshToken);
+             return await _ctx.SaveChangesAsync() > 0;
         }
 
         public async Task<RefreshToken> FindRefreshToken(string refreshTokenId)
         {
-            var refreshToken = await this._ctx.RefreshTokens.FindAsync(refreshTokenId);
+            var refreshToken = await _ctx.RefreshTokens.FindAsync(refreshTokenId);
 
             return refreshToken;
         }
 
         public List<RefreshToken> GetAllRefreshTokens()
         {
-             return  this._ctx.RefreshTokens.ToList();
+             return  _ctx.RefreshTokens.ToList();
         }
 
         public async Task<IdentityUser> FindAsync(UserLoginInfo loginInfo)
         {
-            IdentityUser user = await this._userManager.FindAsync(loginInfo);
+            IdentityUser user = await _userManager.FindAsync(loginInfo);
 
             return user;
         }
 
         public async Task<IdentityResult> CreateAsync(IdentityUser user)
         {
-            var result = await this._userManager.CreateAsync(user);
+            var result = await _userManager.CreateAsync(user);
 
             return result;
         }
 
         public async Task<IdentityResult> AddLoginAsync(string userId, UserLoginInfo login)
         {
-            var result = await this._userManager.AddLoginAsync(userId, login);
+            var result = await _userManager.AddLoginAsync(userId, login);
 
             return result;
         }
 
         public void Dispose()
         {
-            this._ctx.Dispose();
-            this._userManager.Dispose();
-
+            _ctx.Dispose();
+            _userManager.Dispose();
         }
     }
 }

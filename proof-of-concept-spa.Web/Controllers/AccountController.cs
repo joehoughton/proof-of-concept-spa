@@ -12,7 +12,6 @@
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.OAuth;
     using Newtonsoft.Json.Linq;
-    using proof_of_concept_spa.Web;
     using proof_of_concept_spa.Web.Models;
     using proof_of_concept_spa.Web.Results;
 
@@ -23,12 +22,12 @@
 
         private IAuthenticationManager Authentication
         {
-            get { return this.Request.GetOwinContext().Authentication; }
+            get { return Request.GetOwinContext().Authentication; }
         }
 
         public AccountController()
         {
-            this._repo = new AuthRepository();
+            _repo = new AuthRepository();
         }
 
         // POST api/Account/Register
@@ -36,21 +35,21 @@
         [Route("Register")]
         public async Task<IHttpActionResult> Register(UserModel userModel)
         {
-             if (!this.ModelState.IsValid)
+             if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return BadRequest(ModelState);
             }
 
-             IdentityResult result = await this._repo.RegisterUser(userModel);
+             IdentityResult result = await _repo.RegisterUser(userModel);
 
-             IHttpActionResult errorResult = this.GetErrorResult(result);
+             IHttpActionResult errorResult = GetErrorResult(result);
 
              if (errorResult != null)
              {
                  return errorResult;
              }
 
-             return this.Ok();
+             return Ok();
         }
 
         // GET api/Account/ExternalLogin
@@ -64,35 +63,35 @@
 
             if (error != null)
             {
-                return this.BadRequest(Uri.EscapeDataString(error));
+                return BadRequest(Uri.EscapeDataString(error));
             }
 
-            if (!this.User.Identity.IsAuthenticated)
+            if (!User.Identity.IsAuthenticated)
             {
                 return new ChallengeResult(provider, this);
             }
 
-            var redirectUriValidationResult = this.ValidateClientAndRedirectUri(this.Request, ref redirectUri);
+            var redirectUriValidationResult = ValidateClientAndRedirectUri(Request, ref redirectUri);
 
             if (!string.IsNullOrWhiteSpace(redirectUriValidationResult))
             {
-                return this.BadRequest(redirectUriValidationResult);
+                return BadRequest(redirectUriValidationResult);
             }
 
-            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(this.User.Identity as ClaimsIdentity);
+            ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
             if (externalLogin == null)
             {
-                return this.InternalServerError();
+                return InternalServerError();
             }
 
             if (externalLogin.LoginProvider != provider)
             {
-                this.Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                 return new ChallengeResult(provider, this);
             }
 
-            IdentityUser user = await this._repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
+            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(externalLogin.LoginProvider, externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
 
@@ -100,10 +99,10 @@
                                             redirectUri,
                                             externalLogin.ExternalAccessToken,
                                             externalLogin.LoginProvider,
-                                            hasRegistered.ToString(),
+                                            hasRegistered,
                                             externalLogin.UserName);
 
-            return this.Redirect(redirectUri);
+            return Redirect(redirectUri);
 
         }
 
@@ -113,50 +112,49 @@
         public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
         {
 
-            if (!this.ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return this.BadRequest(this.ModelState);
+                return BadRequest(ModelState);
             }
 
-            var verifiedAccessToken = await this.VerifyExternalAccessToken(model.Provider, model.ExternalAccessToken);
+            var verifiedAccessToken = await VerifyExternalAccessToken(model.Provider, model.ExternalAccessToken);
             if (verifiedAccessToken == null)
             {
-                return this.BadRequest("Invalid Provider or External Access Token");
+                return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await this._repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
+            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(model.Provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
             if (hasRegistered)
             {
-                return this.BadRequest("External user is already registered");
+                return BadRequest("External user is already registered");
             }
 
-            user = new IdentityUser() { UserName = model.UserName };
+            user = new IdentityUser { UserName = model.UserName };
 
-            IdentityResult result = await this._repo.CreateAsync(user);
+            IdentityResult result = await _repo.CreateAsync(user);
             if (!result.Succeeded)
             {
-                return this.GetErrorResult(result);
+                return GetErrorResult(result);
             }
 
-            var info = new ExternalLoginInfo()
-            {
+            var info = new ExternalLoginInfo {
                 DefaultUserName = model.UserName,
                 Login = new UserLoginInfo(model.Provider, verifiedAccessToken.user_id)
             };
 
-            result = await this._repo.AddLoginAsync(user.Id, info.Login);
+            result = await _repo.AddLoginAsync(user.Id, info.Login);
             if (!result.Succeeded)
             {
-                return this.GetErrorResult(result);
+                return GetErrorResult(result);
             }
 
             // generate access token response
-            var accessTokenResponse = this.GenerateLocalAccessTokenResponse(model.UserName);
+            var accessTokenResponse = GenerateLocalAccessTokenResponse(model.UserName);
 
-            return this.Ok(accessTokenResponse);
+            return Ok(accessTokenResponse);
         }
 
         [AllowAnonymous]
@@ -167,28 +165,28 @@
 
             if (string.IsNullOrWhiteSpace(provider) || string.IsNullOrWhiteSpace(externalAccessToken))
             {
-                return this.BadRequest("Provider or external access token is not sent");
+                return BadRequest("Provider or external access token is not sent");
             }
 
-            var verifiedAccessToken = await this.VerifyExternalAccessToken(provider, externalAccessToken);
+            var verifiedAccessToken = await VerifyExternalAccessToken(provider, externalAccessToken);
             if (verifiedAccessToken == null)
             {
-                return this.BadRequest("Invalid Provider or External Access Token");
+                return BadRequest("Invalid Provider or External Access Token");
             }
 
-            IdentityUser user = await this._repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
+            IdentityUser user = await _repo.FindAsync(new UserLoginInfo(provider, verifiedAccessToken.user_id));
 
             bool hasRegistered = user != null;
 
             if (!hasRegistered)
             {
-                return this.BadRequest("External user is not registered");
+                return BadRequest("External user is not registered");
             }
 
-            //generate access token response
-            var accessTokenResponse = this.GenerateLocalAccessTokenResponse(user.UserName);
+            // generate access token response
+            var accessTokenResponse = GenerateLocalAccessTokenResponse(user.UserName);
 
-            return this.Ok(accessTokenResponse);
+            return Ok(accessTokenResponse);
 
         }
 
@@ -196,7 +194,7 @@
         {
             if (disposing)
             {
-                this._repo.Dispose();
+                _repo.Dispose();
             }
 
             base.Dispose(disposing);
@@ -206,7 +204,7 @@
         {
             if (result == null)
             {
-                return this.InternalServerError();
+                return InternalServerError();
             }
 
             if (!result.Succeeded)
@@ -215,17 +213,17 @@
                 {
                     foreach (string error in result.Errors)
                     {
-                        this.ModelState.AddModelError("", error);
+                        ModelState.AddModelError("", error);
                     }
                 }
 
-                if (this.ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
-                    // No ModelState errors are available to send, so just return an empty BadRequest.
-                    return this.BadRequest();
+                    // no ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
                 }
 
-                return this.BadRequest(this.ModelState);
+                return BadRequest(ModelState);
             }
 
             return null;
@@ -236,7 +234,7 @@
 
             Uri redirectUri;
 
-            var redirectUriString = this.GetQueryString(this.Request, "redirect_uri");
+            var redirectUriString = GetQueryString(Request, "redirect_uri");
 
             if (string.IsNullOrWhiteSpace(redirectUriString))
             {
@@ -250,14 +248,14 @@
                 return "redirect_uri is invalid";
             }
 
-            var clientId = this.GetQueryString(this.Request, "client_id");
+            var clientId = GetQueryString(Request, "client_id");
 
             if (string.IsNullOrWhiteSpace(clientId))
             {
                 return "client_Id is required";
             }
 
-            var client = this._repo.FindClient(clientId);
+            var client = _repo.FindClient(clientId);
 
             if (client == null)
             {
@@ -308,7 +306,6 @@
 
         private JObject GenerateLocalAccessTokenResponse(string userName)
         {
-
             var tokenExpiration = TimeSpan.FromDays(1);
 
             ClaimsIdentity identity = new ClaimsIdentity(OAuthDefaults.AuthenticationType);
@@ -316,10 +313,9 @@
             identity.AddClaim(new Claim(ClaimTypes.Name, userName));
             identity.AddClaim(new Claim("role", "user"));
 
-            var props = new AuthenticationProperties()
-            {
+            var props = new AuthenticationProperties {
                 IssuedUtc = DateTime.UtcNow,
-                ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration),
+                ExpiresUtc = DateTime.UtcNow.Add(tokenExpiration)
             };
 
             var ticket = new AuthenticationTicket(identity, props);
@@ -369,7 +365,7 @@
                     LoginProvider = providerKeyClaim.Issuer,
                     ProviderKey = providerKeyClaim.Value,
                     UserName = identity.FindFirstValue(ClaimTypes.Name),
-                    ExternalAccessToken = identity.FindFirstValue("ExternalAccessToken"),
+                    ExternalAccessToken = identity.FindFirstValue("ExternalAccessToken")
                 };
             }
         }
