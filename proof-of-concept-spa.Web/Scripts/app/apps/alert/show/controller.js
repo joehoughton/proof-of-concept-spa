@@ -28,7 +28,6 @@
       } else {
         errorView.render();
         $("#error-content").append(errorView.$el.html());
-       
       }
     }
   });

@@ -1,5 +1,10 @@
 ﻿<div class="{{type}}-message" id="error-message">
     <ul>
+        {{#if (isEqual 'success' type)}}
+        <li><i class="fa fa-check"></i> {{message}}.</li>
+        {{else}}
         <li><i class="fa fa-exclamation-triangle"></i> {{message}}.</li>
+        {{/if}}
     </ul>
 </div>
+

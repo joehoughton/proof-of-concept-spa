@@ -2,7 +2,6 @@
 {
     using System.Net;
     using System.Web.Http;
-    using Microsoft.AspNet.Identity;
     using proof_of_concept_spa.Domain.Users;
     using proof_of_concept_spa.Domain.Users.Dto;
 
@@ -11,16 +10,18 @@
     public class UsersController : ApiController
     {
         private readonly IUserRepository _userRepository;
+        private readonly ICurrentUserProvider _currentUserProvider;
 
-        public UsersController(IUserRepository userRepository)
+        public UsersController(IUserRepository userRepository, ICurrentUserProvider currentUserProvider)
         {
             _userRepository = userRepository;
+            _currentUserProvider = currentUserProvider;
         }
 
         [Route("users/current/details")]
         public IHttpActionResult GetUserDetails()
         {
-            string currentUserId = User.Identity.GetUserId();
+            string currentUserId = _currentUserProvider.CurrentUserDetail.UserId;
             var userDetails = _userRepository.GetUserDetails(currentUserId);
             return Ok(userDetails);
         }

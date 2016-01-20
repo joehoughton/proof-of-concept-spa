@@ -4,11 +4,7 @@
   'use strict';
 
   return Backbone.Model.extend({
-    initialize: function () {
-      this.on('change', function () {
-        Backbone.Radio.channel('alert').trigger('success', 'Your account details have been saved.');
-      });
-    },
+    initialize: function () { },
 
     urlRoot: '/api/users/current/details',
 
@@ -18,15 +14,14 @@
         minLength: 5
       }, {
         pattern: /^[a-zA-Z\s]+$/,
-        msg: 'Name can only contain alphabet characters.'
+        msg: 'Name can only contain alphabet characters'
       }],
 
       email: [{
-        required: true,
-        msg: 'Email address can not be blank.'
+        required: true
       }, {
         pattern: 'email',
-        msg: 'Please enter a valid email address.'
+        msg: 'Please enter a valid email address'
       }],
 
       telephone: {

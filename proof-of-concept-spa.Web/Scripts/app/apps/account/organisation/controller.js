@@ -22,6 +22,9 @@
     },
 
     show: function () {
+      // clear previous error messages
+      $('#error-content').empty();
+
       this.model = new UserOrganisation();
       var accountLayout = new AccountLayout();
       this.region.show(accountLayout);

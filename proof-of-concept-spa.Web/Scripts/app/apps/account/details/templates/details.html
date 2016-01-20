@@ -1,117 +1,71 @@
-﻿<form id="details-form">
-  <div class="row">
-    <div class="span2">
-      <label for="name">
-        <strong>Full Name</strong>
-      </label>
-    </div>
-
-    <div class="span6">
-      <input type="text" id="name" value="{{name}}"/>
-    </div>
-  </div>
-
-  <hr />
-
-  <div class="row">
-
-    <div class="span2">
-      <strong>Contact</strong>
-    </div>
-
-    <div class="span6">
-      <div class="row">
-        <div class="span1">
-          <label for="email">
-            <strong>Email</strong>
-          </label>
+﻿<div class="col-sm-11 col-sm-offset-1">
+    <form id="user-detail-form" class="form-horizontal">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <label for="name" class="pull-left col-sm-offset-2 control-label">Full Name</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input type="text" id="name" class="form-control" value="{{name}}" placeholder="Full Name" />
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="span5">
-          <input type="email" id="email" value="{{email}}" />
+        <hr />
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label class="col-sm-2 col-sm-offset-2 control-label">Contact</label>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="form-group">
+                    <label for="email" class="col-md-2 col-sm-4 control-label">Email</label>
+                    <div class="col-md-10 col-sm-8">
+                        <input type="email" id="email" class="form-control" value="{{email}}" placeholder="Email" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-offset-6 control-label">Email Alerts</label>
+                    <div class="col-sm-2">
+                        <div class="toggles">
+                            <input type="checkbox" name="EmailNotification" value="true" class="ios-toggle" id="email-notification" {{#if emailNotification}} checked {{/if}} />
+                            <label for="email-notification" class="checkbox-label"></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="telephone" class="col-md-2 col-sm-4 control-label">Telephone</label>
+                    <div class="col-md-10 col-sm-8">
+                        <input type="tel" id="telephone" class="form-control" value="{{telephone}}" placeholder="Telephone" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mobile" class="col-md-2 col-sm-4 control-label">Mobile</label>
+                    <div class="col-md-10 col-sm-8">
+                        <input type="tel" id="mobile" class="form-control" value="{{mobile}}" placeholder="Mobile" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-4 col-sm-offset-6 control-label">Mobile Alerts</label>
+                    <div class="col-sm-2">
+                        <div class="toggles">
+                            <input type="checkbox" name="SmsNotification" value="true" class="ios-toggle" id="sms-notification" {{#if smsNotification}} checked {{/if}} />
+                            <label for="sms-notification" class="checkbox-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="span2 offset1">
-          <label for="email-alerts">
-            <strong>Email Alerts</strong>
-          </label>
+        <div class="row">
+            <br>
+            <div class="col-xs-12">
+                <div class="form-group" style="float: right; padding-right: 15px;">
+                    <button type="submit" class="btn btn-primary" id="apply">Apply</button>
+                    <a href="" id="cancelChanges">Cancel</a>
+                </div>
+            </div>
         </div>
-
-        <div class="span3">
-          <div class="toggle">
-            
-            {{#if emailAlerts}}
-            <input type="checkbox" class="check" id="email-alerts" checked/>
-            {{else}}
-            <input type="checkbox" class="check" id="email-alerts"/>
-            {{/if}}
-
-            <b class="b switch"></b>
-            <b class="b track"></b>
-          </div>
-        </div>
-      </div>
-
-      <hr />
-
-      <div class="row">
-        <div class="span1">
-          <label for="telephone">
-            <strong>Telephone</strong>
-          </label>
-        </div>
-
-        <div class="span5">
-          <input type="tel" id="telephone" value="{{telephone}}" />
-        </div>
-      </div>
-
-      <hr />
-
-      <div class="row">
-        <div class="span1">
-          <label for="mobile">
-            <strong>Mobile</strong>
-          </label>
-        </div>
-
-        <div class="span5">
-          <input type="tel" id="mobile" value="{{mobile}}"/>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="span2 offset1">
-          <label for="mobile-alerts">
-            <strong>Mobile Alerts</strong>
-          </label>
-        </div>
-
-        <div class="span3">
-          <div class="toggle">
-            
-            {{#if smsAlerts}}
-            <input type="checkbox" class="check" id="mobile-alerts" checked/>
-            {{else}}
-            <input type="checkbox" class="check" id="mobile-alerts"/>
-            {{/if}}
-
-            <b class="b switch"></b>
-            <b class="b track"></b>
-          </div>
-        </div>
-      </div>
-
-      <hr />
-    </div>
-  </div>
-
-  <div class="form-group-commands">
-    <div class="form-commands">
-        <a href="" id="undo">Cancel</a>
-        <button class="button blue center" type="submit" id="apply">Apply</button>
-    </div>
-  </div>
-</form>
+    </form>
+</div>

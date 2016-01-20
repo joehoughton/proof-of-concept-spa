@@ -24,6 +24,12 @@ h1, h2, h3, h4, h5, h6, p {
     border-color: #6D6D6D;
 }
 
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active{
+    color: #ffffff;
+    background-color: #4a4a4a;
+    border-color: #4a4a4a;
+}
+
 /* Custom Container - _Layout.cshtml */
 .custom-container {
     padding-left: 15px;
@@ -239,7 +245,7 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 @media only screen and (max-width : 768px) {
-    #manage-content {
+    .manage-content {
         height: auto;
     }
 }
@@ -256,7 +262,7 @@ h1, h2, h3, h4, h5, h6, p {
     padding-top: 7px;
 }
 
-a#cancel {
+a#cancelChanges {
     color: #878787;
 }
 

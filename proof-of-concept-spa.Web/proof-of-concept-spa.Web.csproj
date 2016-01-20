@@ -181,6 +181,7 @@
     <Content Include="Scripts\app\config\marionette.js" />
     <Content Include="Scripts\app\config\validation.js" />
     <Content Include="Scripts\app\main.js" />
+    <Content Include="Scripts\app\plugins\handlebars\isEqual.js" />
     <Content Include="Scripts\css\bootstrap.css" />
     <Content Include="Scripts\css\bootstrap.min.css" />
     <Content Include="Scripts\css\font-awesome.css" />
@@ -520,7 +521,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripts\app\apps\account\sidebar\models\" />
-    <Folder Include="Scripts\app\plugins\" />
     <Folder Include="Scripts\img\" />
     <Folder Include="Scripts\lib\bower_components\backbone.wreqr\public\javascripts\" />
     <Folder Include="Scripts\lib\bower_components\backbone.wreqr\reports\coverage\spec\javascripts\support\" />

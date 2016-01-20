@@ -16,18 +16,12 @@
 
     events: {
       'click #account-nav': 'navigateAccount',
-      'click #bookings-nav': 'navigateBookings',
       'click #logout': 'logout'
     },
 
     navigateAccount: function (e) {
       e.preventDefault();
       Backbone.history.navigate('account/organisation', {trigger: true});
-    },
-
-    navigateBookings: function (e) {
-      e.preventDefault();
-      Backbone.history.navigate('bookings', {trigger: true});
     },
 
     logout: function (e) {
