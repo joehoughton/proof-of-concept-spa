@@ -1,4 +1,4 @@
-﻿namespace proof_of_concept_spa.Web
+﻿namespace proof_of_concept_spa.Web.Authorization
 {
     using System;
     using System.Collections.Generic;

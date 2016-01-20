@@ -1,7 +1,8 @@
-﻿namespace proof_of_concept_spa.Web.Controllers
+﻿namespace proof_of_concept_spa.Web.Controllers.RefreshTokens
 {
     using System.Threading.Tasks;
     using System.Web.Http;
+    using proof_of_concept_spa.Web.Authorization;
 
     [RoutePrefix("api/RefreshTokens")]
     public class RefreshTokensController : ApiController

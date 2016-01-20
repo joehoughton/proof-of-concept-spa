@@ -3,6 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using Microsoft.Owin.Security.Infrastructure;
+    using proof_of_concept_spa.Web.Authorization;
     using proof_of_concept_spa.Web.Entities;
 
     public class SimpleRefreshTokenProvider : IAuthenticationTokenProvider

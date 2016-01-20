@@ -1,4 +1,4 @@
-﻿namespace proof_of_concept_spa.Web.Controllers
+﻿namespace proof_of_concept_spa.Web.Controllers.Account
 {
     using System;
     using System.Linq;
@@ -12,6 +12,7 @@
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.OAuth;
     using Newtonsoft.Json.Linq;
+    using proof_of_concept_spa.Web.Authorization;
     using proof_of_concept_spa.Web.Models;
     using proof_of_concept_spa.Web.Results;
 

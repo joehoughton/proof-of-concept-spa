@@ -187,6 +187,7 @@
     <Content Include="Scripts\css\font-awesome.css" />
     <Content Include="Scripts\css\font-awesome.min.css" />
     <Content Include="Scripts\css\site.css" />
+    <Content Include="Scripts\db\ProofOfConcept.sql" />
     <Content Include="Scripts\fonts\bootstrap\glyphicons-halflings-regular.svg" />
     <Content Include="Scripts\fonts\fontawesome-webfont.svg" />
     <Content Include="Scripts\lib\bower_components\backbone-validation\buster.js" />
@@ -396,16 +397,16 @@
   <ItemGroup>
     <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="AuthContext.cs" />
-    <Compile Include="AuthRepository.cs" />
+    <Compile Include="Authorization\AuthContext.cs" />
+    <Compile Include="Authorization\AuthRepository.cs" />
     <Compile Include="Autofac\AutofacWebModule.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\Account\AccountController.cs" />
     <Compile Include="Controllers\Organisation\OrganisationController.cs" />
-    <Compile Include="Controllers\RefreshTokensController.cs" />
+    <Compile Include="Controllers\RefreshTokens\RefreshTokensController.cs" />
     <Compile Include="Controllers\Users\UsersController.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\RefreshToken.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="Authorization\Helper.cs" />
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\ExternalLoginModels.cs" />
     <Compile Include="Models\UserModel.cs" />

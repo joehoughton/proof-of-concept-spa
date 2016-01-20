@@ -7,6 +7,7 @@
     using Microsoft.AspNet.Identity.EntityFramework;
     using Microsoft.Owin.Security;
     using Microsoft.Owin.Security.OAuth;
+    using proof_of_concept_spa.Web.Authorization;
     using proof_of_concept_spa.Web.Entities;
     using proof_of_concept_spa.Web.Models;
 
