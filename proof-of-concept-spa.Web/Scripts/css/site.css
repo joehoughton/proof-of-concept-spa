@@ -30,6 +30,10 @@ h1, h2, h3, h4, h5, h6, p {
     border-color: #4a4a4a;
 }
 
+.button-group {
+    float: right; padding-right: 15px;
+}
+
 /* Custom Container - _Layout.cshtml */
 .custom-container {
     padding-left: 15px;
