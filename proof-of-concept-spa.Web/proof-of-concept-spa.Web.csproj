@@ -206,8 +206,7 @@
     <Content Include="Scripts\lib\bower_components\backbone.babysitter\spec\javascripts\helpers\jasmineMatchers.js" />
     <Content Include="Scripts\lib\bower_components\backbone.babysitter\src\build\backbone.babysitter.js" />
     <Content Include="Scripts\lib\bower_components\backbone.babysitter\src\childviewcontainer.js" />
-    <Content Include="Scripts\lib\bower_components\backbone.radio\build\backbone.radio.js" />
-    <Content Include="Scripts\lib\bower_components\backbone.radio\build\backbone.radio.min.js" />
+    <Content Include="Scripts\lib\bower_components\backbone.radio\src\backbone.radio.min.js" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\gulpfile.js" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\src\backbone.radio.js" />
     <Content Include="Scripts\lib\bower_components\backbone.wreqr\lib\backbone.wreqr.js" />
@@ -444,8 +443,6 @@
     <Content Include="Scripts\lib\bower_components\backbone.babysitter\readme.md" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\.bower.json" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\bower.json" />
-    <Content Include="Scripts\lib\bower_components\backbone.radio\build\backbone.radio.js.map" />
-    <Content Include="Scripts\lib\bower_components\backbone.radio\build\backbone.radio.min.js.map" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\CHANGELOG.md" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\component.json" />
     <Content Include="Scripts\lib\bower_components\backbone.radio\LICENSE" />

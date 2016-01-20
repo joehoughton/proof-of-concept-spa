@@ -8,7 +8,7 @@
       bootstrap: '../lib/bower_components/bootstrap/js/bootstrap',
       underscore: '../lib/bower_components/underscore/underscore',
       backbone: '../lib/bower_components/backbone/backbone',
-      'backbone.radio': '../lib/bower_components/backbone.radio/build/backbone.radio.min',
+      'backbone.radio': '../lib/bower_components/backbone.radio/src/backbone.radio.min',
       'backbone.validation': '../lib/bower_components/backbone-validation/dist/backbone-validation-amd',
       Marionette: '../lib/bower_components/marionette/lib/backbone.marionette',
       hbs: '../lib/bower_components/require-handlebars-plugin/hbs',
