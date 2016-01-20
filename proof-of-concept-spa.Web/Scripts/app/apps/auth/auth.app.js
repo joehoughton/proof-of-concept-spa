@@ -1,8 +1,9 @@
 ﻿define([
   'backbone.radio',
   'Marionette',
-  'apps/auth/login/controller'
-], function (Radio, Marionette, LoginController) {
+  'apps/auth/login/controller',
+  'apps/auth/logout/controller'
+], function (Radio, Marionette, LoginController, LogoutController) {
   'use strict';
 
   return Marionette.Object.extend({
@@ -20,7 +21,8 @@
         controller: this,
 
         appRoutes: {
-          'login(/)': 'login'
+          'login(/)': 'login',
+          'logout(/)': 'logout'
         }
       });
     },
@@ -29,6 +31,9 @@
       return new LoginController({
         region: this.region
       });
+    },
+    logout: function () {
+      return new LogoutController();
     }
   });
 });

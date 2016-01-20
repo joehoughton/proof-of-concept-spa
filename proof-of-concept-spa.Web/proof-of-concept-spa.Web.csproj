@@ -167,6 +167,7 @@
     <Content Include="Scripts\app\apps\auth\login\models\credentials.js" />
     <Content Include="Scripts\app\apps\auth\login\templates\view.html" />
     <Content Include="Scripts\app\apps\auth\login\views\layout.js" />
+    <Content Include="Scripts\app\apps\auth\logout\controller.js" />
     <Content Include="Scripts\app\apps\header\header.app.js" />
     <Content Include="Scripts\app\apps\header\show\controller.js" />
     <Content Include="Scripts\app\apps\header\show\models\navCollection.js" />
